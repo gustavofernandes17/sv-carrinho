@@ -52,14 +52,16 @@ void data_reception_callback(char *topic, uint8_t *payload, unsigned int lenght)
 
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(115200);
+  Serial.setDebugOutput(true);
+  Serial.println();
 
   Blynk.begin(auth, ssid, pass, "blynk.iot-cm.com", 8080); 
 
   receptor.setup(broker, port, device_id, data_reception_callback);
   engines_controller.setup();
 
-  setup_config_camera();
+  setup_camera();
 }
 
 void loop() {
