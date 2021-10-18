@@ -1,11 +1,17 @@
-#include "StateManager.h"
+#include "StateManager.h" // Inclui arquivo de cabeçalho
 
-
+/**
+ * Contrutor responsável por salvar os observadores que vão reagir as mudanças 
+ * do estado.
+*/
 StateManager::StateManager(EnginesController* engine_observer)
 {
     this->engine_observer = engine_observer; 
 }
 
+/**
+ * Função responsável por alterar o estado do microcontrolador.
+*/
 void StateManager::set_state(state_package state)
 {
 
@@ -18,10 +24,18 @@ void StateManager::set_state(state_package state)
 
 }
 
+/**
+ * Notifica os observadores que devem reagir a alguma mudança realizada no 
+ * estado.
+ **/
 void StateManager::notify(int channel, int data)
 {
     this->engine_observer->on_update(channel, data);
 }
+
+
+// A partir daqui são apenas funções Setters que alteram de maneira controlado 
+// valores respectivos ao estado 
 
 void StateManager::set_base_potentiometer(int value)
 {

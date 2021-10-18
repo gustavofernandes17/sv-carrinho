@@ -6,10 +6,11 @@
 #include "Arduino.h"
 #include "ESP32Servo.h"
 
+// Interface da Classe Responsável pelo controle dos motores
 class EnginesController {
 
     public:
-
+    
         void setup();
         void on_update(int channel, int data);
 

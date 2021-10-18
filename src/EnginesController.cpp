@@ -1,6 +1,6 @@
 #include "EnginesController.h"
 
-
+// Função Construtora que inicializa o objeto
 EnginesController::EnginesController(
     int counter_clockwise_engine_pin, 
     int clockwise_engine_pin, 
@@ -17,6 +17,8 @@ EnginesController::EnginesController(
 
 }   
 
+// Função responsável por configurar a pinagem do microcontrolador e além de 
+// configurar controle de pulsos PWM  
 void EnginesController::setup()
 {
     pinMode(this->clockwise_engine_pin, OUTPUT); 
@@ -47,6 +49,7 @@ void EnginesController::setup()
 
 }
 
+// função que implementa a reação a mudança do estado dos objetos
 void EnginesController::on_update(int channel, int data) {
 
     switch (channel) 

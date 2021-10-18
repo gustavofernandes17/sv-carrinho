@@ -1,7 +1,7 @@
 #ifndef STATE_MANAGER_H 
 #define STATE_MANAGER_H
 
-// da dando um erro estranho  mas isso arruma 
+
 class EnginesController;
 
 #include "EnginesController.h"

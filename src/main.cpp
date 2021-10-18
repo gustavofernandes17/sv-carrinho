@@ -1,3 +1,5 @@
+// inclusão de bibliotecas
+// definição de constantes
 #define BLYNK_PRINT Serial
 
 #include <Arduino.h>
@@ -12,7 +14,8 @@
 #include "StateManager.h"
 #include "EnginesController.h"
 
-#include "camera_config.h"
+#include "camera_management.h"
+
 
 // pinos que vao controlar os motores
 #define PINO_MOTOR_SENTIDO_HORARIO 12
@@ -25,19 +28,20 @@
 
 // Blynk e rede WIFI
 char auth[] = "6Ck3mKUw32pM8TGE8bdNyfip6lxSt4Bq";
-char ssid[] = "Redmi Note 7";
-char pass[] = "b6ee8b98282c";
+char ssid[] = "Cesar"; // "Redmi Note 7";
+char pass[] = "pedro0908fernandes"; // "b6ee8b98282c";
 
 // broker
 char* broker = "broker.hivemq.com";
 int port = 1883;
 char* device_id = "SV-CARRINHO";
 
-
+// Instanciamento dos objetos para lidar com comunicação e Redes
 WiFiClient client_wifi; 
 PubSubClient mqtt_client(client_wifi);
 Receptor receptor(mqtt_client); 
 
+// Objeto que gerencia o sistema de controle dos motores
 EnginesController engines_controller(
   PINO_MOTOR_SENTIDO_ANTI_HORARIO,
   PINO_MOTOR_SENTIDO_HORARIO,
@@ -45,38 +49,48 @@ EnginesController engines_controller(
   PINO_SERVO_2_CORPO
 );
 
+
+// Objeto que gerencia o Estado do Microcontrolador
 StateManager state_manager(&engines_controller);
 
-// função teste
+// Protótipo da função que gerencia a recepção da comunicação do painel de controle 
 void data_reception_callback(char *topic, uint8_t *payload, unsigned int lenght); 
+
 
 void setup() {
 
+  
+  // Inicia Comunicação Serial para Depuração
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
 
+  // Inicializa o Blynk
   Blynk.begin(auth, ssid, pass, "blynk.iot-cm.com", 8080); 
 
+  //inicializa o receptor (comunicação do painel de controle)
   receptor.setup(broker, port, device_id, data_reception_callback);
+  
+  // inicializa o controlador dos motores
   engines_controller.setup();
 
-  setup_camera();
+  setup_config_cam();
+
 }
 
 void loop() {
-
+  server.handleClient();
   Blynk.run();
   mqtt_client.loop(); 
-
 }
 
+// Gerencia os Botões Virtuais do Blynk
 BLYNK_WRITE(V0) {
-  state_manager.set_move_right(1);
+  state_manager.set_move_right(param.asInt());
 }
 
 BLYNK_WRITE(V1) {
-  state_manager.set_move_left(1);
+  state_manager.set_move_left(param.asInt());
 }
 
 BLYNK_WRITE(V2) {
@@ -87,7 +101,7 @@ BLYNK_WRITE(V3) {
   state_manager.set_body_potentiometer(param.asInt());
 }
 
-
+// implementação da função que recebe os dados do painel de controle
 void data_reception_callback(char *topic, uint8_t *payload, unsigned int lenght) 
 {
   String msg; 
