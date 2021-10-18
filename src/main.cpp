@@ -16,7 +16,6 @@
 
 #include "camera_management.h"
 
-
 // pinos que vao controlar os motores
 #define PINO_MOTOR_SENTIDO_HORARIO 12
 #define PINO_MOTOR_SENTIDO_ANTI_HORARIO 13
@@ -24,6 +23,9 @@
 // pinos que vao controlar os servos
 #define PINO_SERVO_1_BASE 2 
 #define PINO_SERVO_2_CORPO 15
+
+#define PINO_FIM_DE_CURSO_1 4
+#define PINO_FIM_DE_CURSO_2 16
 
 
 // Blynk e rede WIFI
@@ -55,7 +57,7 @@ StateManager state_manager(&engines_controller);
 
 // Protótipo da função que gerencia a recepção da comunicação do painel de controle 
 void data_reception_callback(char *topic, uint8_t *payload, unsigned int lenght); 
-
+void stop_engines_interrupt_callback();
 
 void setup() {
 
@@ -74,7 +76,12 @@ void setup() {
   // inicializa o controlador dos motores
   engines_controller.setup();
 
+  // configurando a camera
   setup_config_cam();
+
+  // Interrupts para o fim de curso
+  attachInterrupt(PINO_FIM_DE_CURSO_1, stop_engines_interrupt_callback, RISING);
+  attachInterrupt(PINO_FIM_DE_CURSO_2, stop_engines_interrupt_callback, RISING);  
 
 }
 
@@ -99,6 +106,12 @@ BLYNK_WRITE(V2) {
 
 BLYNK_WRITE(V3) {
   state_manager.set_body_potentiometer(param.asInt());
+}
+
+// função responsável por parar os motores quando o interrupt for acionado
+void stop_engines_interrupt_callback()
+{
+  state_manager.set_full_stop(true); 
 }
 
 // implementação da função que recebe os dados do painel de controle

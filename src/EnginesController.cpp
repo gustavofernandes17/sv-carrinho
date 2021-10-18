@@ -82,28 +82,35 @@ void EnginesController::on_update(int channel, int data) {
         case MOVE_RIGHT_CHANNEL: 
 
             Serial.println("moving engines to right:" + String(data));
+
             digitalWrite(this->counter_clockwise_engine_pin, data == 1 ? HIGH : LOW);
             digitalWrite(this->clockwise_engine_pin, LOW);
 
             break;
 
         case PIR_LEFT_CHANNEL: 
+
+            if (data == 1) Blynk.notify("Movimentação Suspeita");
+
             digitalWrite(this->clockwise_engine_pin, data == 1 ? HIGH : LOW);
             digitalWrite(this->counter_clockwise_engine_pin, LOW);
 
             break;
 
         case PIR_RIGHT_CHANNEL: 
+
+            if (data == 1) Blynk.notify("Movimentação Suspeita");
         
             digitalWrite(this->counter_clockwise_engine_pin, data == 1 ? HIGH : LOW);
             digitalWrite(this->clockwise_engine_pin, LOW);
 
             break;
+            
         case FULL_STOP_CHANNEL:
 
             digitalWrite(this->clockwise_engine_pin, LOW);
             digitalWrite(this->clockwise_engine_pin, LOW);
-            
+
             break;
     }
 }

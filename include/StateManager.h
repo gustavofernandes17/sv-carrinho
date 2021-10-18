@@ -4,6 +4,8 @@
 
 class EnginesController;
 
+#include <BlynkSimpleEsp32.h>
+
 #include "EnginesController.h"
 
 #define BASE_POT_CHANNEL 0

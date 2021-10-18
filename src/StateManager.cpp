@@ -64,12 +64,14 @@ void StateManager::set_move_left(int value)
 void StateManager::set_pir_left(int value)
 {
     this->pir_left_s = value; 
+    if (value == 1) Blynk.notify("Movimentação Suspeita");
     this->notify(PIR_LEFT_CHANNEL, this->pir_left_s);
 }
 
 void StateManager::set_pir_right(int value)
 {
     this->pir_right_s = value; 
+   
     this->notify(PIR_RIGHT_CHANNEL, this->pir_right_s);
 }
 
