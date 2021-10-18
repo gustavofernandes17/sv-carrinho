@@ -12,6 +12,7 @@ class EnginesController;
 #define MOVE_RIGHT_CHANNEL 3
 #define PIR_LEFT_CHANNEL 4
 #define PIR_RIGHT_CHANNEL 5 
+#define FULL_STOP_CHANNEL 6
 
 typedef struct {
     int base_potentiometer_s; 
@@ -38,7 +39,8 @@ class StateManager {
         void set_move_left(int value); 
         void set_pir_left(int value);
         void set_pir_right(int value);
-
+        void set_full_stop(bool value);
+  
         void notify(int channel, int data);
 
         

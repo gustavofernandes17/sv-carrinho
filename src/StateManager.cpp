@@ -72,3 +72,10 @@ void StateManager::set_pir_right(int value)
     this->pir_right_s = value; 
     this->notify(PIR_RIGHT_CHANNEL, this->pir_right_s);
 }
+
+void StateManager::set_full_stop(bool value) 
+{
+    this->set_move_left(0); 
+    this->set_move_right(0); 
+    this->notify(FULL_STOP_CHANNEL, true);
+}

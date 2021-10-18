@@ -11,15 +11,16 @@ class Receptor {
         char* host; 
         int host_port; 
         char* device_id;
-        const int n_channels = 6;
+        const int n_channels = 7;
 
-        const char* channels_arr[6] = {
+        const char* channels_arr[7] = {
             "controlador/base",
             "controlador/corpo",
             "controlador/direita", 
             "controlador/esquerda",
             "controlador/left", 
-            "controlador/right"
+            "controlador/right",
+            "controlador/stop"
         };
 
         const char* base_potentiometer_channel = "controlador/base"; 
@@ -29,6 +30,7 @@ class Receptor {
 
         const char* pir_left_channel = "controlador/left"; 
         const char* pir_right_channel = "controlador/right";
+        const char* full_stop_channel = "controlador/stop";
 
         void setup(
             char* host,
@@ -43,7 +45,6 @@ class Receptor {
 
         PubSubClient& mqtt_client;
 
-    
 }; 
 
 

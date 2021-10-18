@@ -150,4 +150,10 @@ void data_reception_callback(char *topic, uint8_t *payload, unsigned int lenght)
     state_manager.set_pir_left(value_received); 
   }
 
+  if (string_topic.equals(receptor.full_stop_channel))
+  {
+    Serial.println("Desligando motores DC..."); 
+    state_manager.set_full_stop(true);
+  }
+
 }

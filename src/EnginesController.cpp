@@ -59,14 +59,15 @@ void EnginesController::on_update(int channel, int data) {
             Serial.println("moving base pot:" + String(data));
             this->base_servo.attach(this->base_servo_engine_pin, 600, 2400); 
             this->base_servo.write(data); 
-
+            this->base_servo.detach();
             break; 
 
         case BODY_POT_CHANNEL: 
 
             Serial.println("moving body pot:" + String(data));
             this->body_servo.attach(this->body_servo_engine_pin, 600, 2400); 
-            this->body_servo.write(data); 
+            this->body_servo.write(data);
+            this->base_servo.detach();
 
             break; 
 
@@ -97,6 +98,12 @@ void EnginesController::on_update(int channel, int data) {
             digitalWrite(this->counter_clockwise_engine_pin, data == 1 ? HIGH : LOW);
             digitalWrite(this->clockwise_engine_pin, LOW);
 
+            break;
+        case FULL_STOP_CHANNEL:
+
+            digitalWrite(this->clockwise_engine_pin, LOW);
+            digitalWrite(this->clockwise_engine_pin, LOW);
+            
             break;
     }
 }
